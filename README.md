@@ -5,7 +5,7 @@
 ## 产品功能 TODOs
 产品是一个 Web 网站（PC端、移动端兼容），分为 4 个步骤的页面：
 - [ ] **欢迎语**：Logo + 一句话欢迎语（垂直水平居中，2 秒后自动进入下一页 *面试引导*）`欢迎来到「流转」线上面试环节，期待你的加入！` [logo](./logo.png) 
-- [ ] **面试引导**：介绍面试的流程和说明（Markdown 文案展示，需要渲染为富文本样式）[页面文案 markdown](https://raw.githubusercontent.com/jadeflow/HireWithCode/main/README.md)
+- [ ] **面试引导**：介绍面试的流程和说明（Markdown 文案展示，需要渲染为富文本样式）[页面文案 markdown](https://raw.githubusercontent.com/Jade-Flow/HireWithCode/main/README.md)
 - [ ] **接受挑战**：表单，`input`(用户输入自己的 github id) 、`input`(邮箱)、`submit button`(接受挑战)
 - [ ] **完成挑战**：表单，`input`(github 仓库 url)、`input`([Vercel](https://vercel.app/) 在线体验地址)、`submit button`(提交作品)
 
