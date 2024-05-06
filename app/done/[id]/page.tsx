@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import updateUser from "./action"
 import { useState } from "react"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 const FormSchema = z.object({
 	repoUrl: z.string().url({
@@ -37,11 +38,16 @@ const Done = ({ params }: { params: { id: string } }) => {
 		},
 	})
 
+	const [isLoading, setLoading] = useState(false)
+
 	async function onSubmit(values: FormSchemaType) {
+		setLoading(true)
 		try {
 			const user = await updateUser({ ...values, id: params.id })
 			setDone(true)
 		} catch (error) {}
+
+		setLoading(false)
 	}
 
 	return !done ? (
@@ -81,7 +87,15 @@ const Done = ({ params }: { params: { id: string } }) => {
 						)}
 					/>
 					<div className="flex justify-between mt-[20px]">
-						<Button size="lg" className="w-full" type="submit">
+						<Button
+							size="lg"
+							className="w-full"
+							type="submit"
+							disabled={isLoading}
+						>
+							{isLoading && (
+								<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+							)}
 							完成挑战
 						</Button>
 					</div>

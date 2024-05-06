@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import createUser from "./action"
+import { useState } from "react"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 const FormSchema = z.object({
 	email: z.string().email({
@@ -38,7 +40,10 @@ const Agree = () => {
 		},
 	})
 
+	const [isLoading, setLoading] = useState(false)
+
 	async function onSubmit(values: FormSchemaType) {
+		setLoading(true)
 		try {
 			const user = await createUser(values)
 			if (user.id) {
@@ -47,6 +52,7 @@ const Agree = () => {
 		} catch (error) {
 			form.setError("email", { type: "string", message: "当前邮箱已存在！" })
 		}
+		setLoading(false)
 	}
 
 	return (
@@ -88,7 +94,15 @@ const Agree = () => {
 						)}
 					/>
 					<div className="flex justify-between mt-[20px]">
-						<Button size="lg" className="w-full" type="submit">
+						<Button
+							size="lg"
+							className="w-full"
+							type="submit"
+							disabled={isLoading}
+						>
+							{isLoading && (
+								<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+							)}
 							接受挑战
 						</Button>
 					</div>
