@@ -8,17 +8,25 @@ interface valuesType {
 }
 const updateUser = async (values: valuesType) => {
 	const { id, onlineUrl, repoUrl } = values
-
-	const user = await prisma.user.update({
-		where: { id: +id },
-		data: {
-			onlineUrl,
-			repoUrl,
-			done: true,
+	const existUser = await prisma.user.findFirst({
+		where: {
+			id: +id,
 		},
 	})
 
-	return user
+	if (existUser) {
+		const user = await prisma.user.update({
+			where: { id: +id },
+			data: {
+				onlineUrl,
+				repoUrl,
+				done: true,
+			},
+		})
+		return user
+	} else {
+		throw Error("不存在")
+	}
 }
 
 export default updateUser
