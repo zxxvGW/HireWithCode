@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import updateUser from "./action"
+import { useState } from "react"
 
 const FormSchema = z.object({
 	repoUrl: z.string().url({
@@ -24,7 +26,9 @@ const FormSchema = z.object({
 
 export type FormSchemaType = z.infer<typeof FormSchema>
 
-const Done = () => {
+const Done = ({ params }: { params: { id: string } }) => {
+	const [done, setDone] = useState(false)
+
 	const form = useForm<FormSchemaType>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -34,10 +38,13 @@ const Done = () => {
 	})
 
 	async function onSubmit(values: FormSchemaType) {
-		console.log(values)
+		try {
+			const user = await updateUser({ ...values, id: params.id })
+			setDone(true)
+		} catch (error) {}
 	}
 
-	return (
+	return !done ? (
 		<div className="flex justify-center pointer-events-auto relative z-10 p-16 rounded-lg bg-white border ">
 			<Form {...form}>
 				<form
@@ -81,6 +88,8 @@ const Done = () => {
 				</form>
 			</Form>
 		</div>
+	) : (
+		<p className="text-green-500 text-3xl">已提交</p>
 	)
 }
 export default Done

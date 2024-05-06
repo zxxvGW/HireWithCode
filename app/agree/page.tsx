@@ -9,10 +9,12 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { prisma } from "@/lib/prisma"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import createUser from "./action"
 
 const FormSchema = z.object({
 	email: z.string().email({
@@ -37,8 +39,14 @@ const Agree = () => {
 	})
 
 	async function onSubmit(values: FormSchemaType) {
-		console.log(values)
-		router.push("/done")
+		try {
+			const user = await createUser(values)
+			if (user.id) {
+				router.push(`/done/${user.id}`)
+			}
+		} catch (error) {
+			form.setError("email", { type: "string", message: "当前邮箱已存在！" })
+		}
 	}
 
 	return (
@@ -49,7 +57,9 @@ const Agree = () => {
 					className="p-[20px] w-[420px]"
 				>
 					<div className="flex justify-center my-[20px]">
-						<h1 className="text-2xl font-bold text-[#6960EC]">挑战自己</h1>
+						<h1 className="text-2xl font-bold text-[#6960EC]">
+							填写邮箱接受挑战
+						</h1>
 					</div>
 					<FormField
 						control={form.control}
