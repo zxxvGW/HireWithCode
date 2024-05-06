@@ -50,7 +50,8 @@ const Agree = () => {
 				router.push(`/done/${user.id}`)
 			}
 		} catch (error) {
-			form.setError("email", { type: "string", message: "当前邮箱已存在！" })
+			console.log(error)
+			// form.setError("email", { type: "string", message: "当前邮箱已存在！" })
 		}
 		setLoading(false)
 	}
